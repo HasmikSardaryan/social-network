@@ -1,13 +1,25 @@
 import { motion } from "framer-motion";
 import { Eye, EyeOff } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { Axios } from "../../lib/api";
 import type { AuthUser} from "../../types";
 import { AxiosError, isAxiosError } from "axios";
+import useAuthContext from "../../context/AuthContext";
 
 export const Login = () => {
+
+  const { user } = useAuthContext(); 
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user) {
+      navigate("/profile");
+    }
+  }, [ user ]);
+
+
   const { register, handleSubmit, formState: { isValid }} = useForm<AuthUser>({
     mode: "onChange",
   });
@@ -15,22 +27,20 @@ export const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
 
-  const navigate = useNavigate();
-
-  const handleLogin: SubmitHandler<AuthUser> = (data: AuthUser) => {
-    Axios.post("/login", data)
-      .then(() => {
-        navigate("/profile");
-      })
-      .catch((err) => {
-        if (isAxiosError(err)) {
-          const errRes = err.response?.data as AxiosError;
-          setError(errRes.message);
-        }
-      });
+  const handleLogin: SubmitHandler<AuthUser> = async (data: AuthUser) => {
+    try {
+      await Axios.post("/login", data)
+      navigate("/profile");
+    }
+    catch(err) {
+      if (isAxiosError(err)) {
+        const errRes = err.response?.data as AxiosError;
+        setError(errRes.message);
+      }
+    }
   };
 
-  
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-slate-900 to-slate-800 p-6">
       <motion.div

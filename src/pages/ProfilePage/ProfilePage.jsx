@@ -1,9 +1,22 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { motion } from "framer-motion";
 import { User, Settings, Edit3, Users, Image, LogOut } from "lucide-react";
+import useAuthContext from "../../context/AuthContext";
+import { Link, useNavigate } from "react-router-dom";
 
 export const Profile = () => {
-  return (
+  const { user, loading} = useAuthContext(); 
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    console.log(user);
+    
+    if (!loading && !user) {
+      navigate("/login");
+    }
+  }, [user, loading, navigate]);
+
+  return user && (
     <div className="min-h-screen bg-slate-900 text-white">
       <div className="h-48 bg-gradient-to-r from-blue-700 to-blue-500"></div>
 
@@ -19,11 +32,15 @@ export const Profile = () => {
               <User className="w-16 h-16 text-slate-300" />
             </div>
             <div>
-              <h2 className="text-3xl font-bold">John Doe</h2>
-              <p className="text-slate-400">@johndoe</p>
+              <h2 className="text-3xl font-bold">{user.name}</h2>
+              <p className="text-slate-400">@{user.surname}</p>
               <div className="flex space-x-4 mt-2 text-slate-300 text-sm">
-                <span><strong>120</strong> Followers</span>
-                <span><strong>180</strong> Following</span>
+                <span>
+                  <strong>{user.followers.length}</strong> Followers
+                </span>
+                <span>
+                  <strong>{user.following.length}</strong> Following
+                </span>
               </div>
             </div>
           </div>
@@ -32,19 +49,26 @@ export const Profile = () => {
               <Edit3 className="h-4 w-4" /> <span>Edit Profile</span>
             </button>
             <button className="px-4 py-2 bg-slate-700 hover:bg-slate-600 rounded-xl text-slate-200 text-sm flex items-center space-x-2">
-              <Settings className="h-4 w-4" /> <span>Settings</span>
+              <Settings className="h-4 w-4" /> <Link to='/settings'>Settings</Link>
             </button>
           </div>
         </div>
 
         <p className="text-slate-300 mt-4 max-w-2xl">
-          Passionate developer, coffee lover ☕, and open-source enthusiast. Building amazing products one line of code at a time.
+          Passionate developer, coffee lover ☕, and open-source enthusiast.
+          Building amazing products one line of code at a time.
         </p>
 
         <div className="flex border-b border-slate-700 mt-6">
-          <button className="px-4 py-2 text-blue-400 border-b-2 border-blue-500 font-medium">Posts</button>
-          <button className="px-4 py-2 text-slate-400 hover:text-white">Media</button>
-          <button className="px-4 py-2 text-slate-400 hover:text-white">About</button>
+          <button className="px-4 py-2 text-blue-400 border-b-2 border-blue-500 font-medium">
+            Posts
+          </button>
+          <button className="px-4 py-2 text-slate-400 hover:text-white">
+            Media
+          </button>
+          <button className="px-4 py-2 text-slate-400 hover:text-white">
+            About
+          </button>
         </div>
 
         <div className="space-y-4 mt-6">
@@ -58,7 +82,8 @@ export const Profile = () => {
                 <span className="text-slate-400 text-sm">• 2h ago</span>
               </div>
               <p className="text-slate-200">
-                This is a sample post content. It can contain text, links, or media preview.
+                This is a sample post content. It can contain text, links, or
+                media preview.
               </p>
             </div>
           ))}
@@ -78,4 +103,4 @@ export const Profile = () => {
       </motion.div>
     </div>
   );
-}
+};

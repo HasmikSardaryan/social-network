@@ -11,5 +11,6 @@ export type AuthUser = Pick<IUser, 'login'| 'password'>
 
 export interface IResponse {
     status: string,
-    message: string
+    message: string,
+    payload: unknown
 }
