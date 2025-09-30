@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
+import { Eye, EyeOff } from "lucide-react";
 import { Axios } from "../../lib/api";
 import { useNavigate } from "react-router-dom";
 import { AxiosError, isAxiosError } from "axios";
@@ -7,6 +8,8 @@ import { useState } from "react";
 
 export const PasswordSettings = () => {
   const [error, setError] = useState("");
+  const [showPassword1, setShowPassword1] = useState(false);
+  const [showPassword2, setShowPassword2] = useState(false);
 
   const {
     register,
@@ -45,11 +48,18 @@ export const PasswordSettings = () => {
         <form className="space-y-4" onSubmit={handleSubmit(handleUpdate)}>
           <div className="relative">
             <input
-              type="password"
+              type={showPassword1 ? 'text' : 'password'}
               placeholder="Old Password"
               className="w-full p-3 rounded-xl bg-slate-700 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
               {...register("oldPassword", { required: true })}
             />
+            <button
+              type="button"
+              onClick={() => setShowPassword1((prev) => !prev)}
+              className="absolute right-3 top-3 text-slate-400 hover:text-white"
+            >
+              {showPassword1 ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+            </button>
           </div>
 
           {errors.newPassword && (
@@ -57,7 +67,7 @@ export const PasswordSettings = () => {
           )}
           <div className="relative">
             <input
-              type="password"
+              type={showPassword2 ? 'text' : 'password'}
               placeholder="New Password"
               className="w-full p-3 rounded-xl bg-slate-700 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
               {...register("newPassword", {
@@ -68,6 +78,13 @@ export const PasswordSettings = () => {
                 },
               })}
             />
+            <button
+              type="button"
+              onClick={() => setShowPassword2((prev) => !prev)}
+              className="absolute right-3 top-3 text-slate-400 hover:text-white"
+            >
+              {showPassword2 ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+            </button>
           </div>
 
           <button

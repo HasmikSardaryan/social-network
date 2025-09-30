@@ -3,10 +3,21 @@ import { motion } from "framer-motion";
 import { User, Settings, Edit3, Users, Image, LogOut } from "lucide-react";
 import useAuthContext from "../../context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
+import { Axios } from "../../lib/api";
 
 export const Profile = () => {
   const { user, loading} = useAuthContext(); 
   const navigate = useNavigate();
+
+
+  const handleLogout = async() => {
+    try {
+      Axios.post('/logout');
+      navigate('/login');
+    } catch (err){
+      console.log(err);
+    }
+  }
 
   useEffect(() => {
     console.log(user);
@@ -33,7 +44,7 @@ export const Profile = () => {
             </div>
             <div>
               <h2 className="text-3xl font-bold">{user.name}</h2>
-              <p className="text-slate-400">@{user.surname}</p>
+              <p className="text-slate-400">@{user.login}</p>
               <div className="flex space-x-4 mt-2 text-slate-300 text-sm">
                 <span>
                   <strong>{user.followers.length}</strong> Followers
@@ -96,9 +107,13 @@ export const Profile = () => {
           <button className="flex items-center space-x-2 px-4 py-2 bg-slate-700 hover:bg-slate-600 rounded-xl text-slate-200">
             <Image className="h-4 w-4" /> <span>Media</span>
           </button>
-          <button className="flex items-center space-x-2 px-4 py-2 bg-red-600 hover:bg-red-700 rounded-xl text-white">
-            <LogOut className="h-4 w-4" /> <span>Log Out</span>
-          </button>
+          <button
+            onClick={() => handleLogout()}
+            className="flex items-center space-x-2 px-4 py-2 bg-red-600 hover:bg-red-700 rounded-xl text-white"
+          >
+            <LogOut className="h-4 w-4" />
+          < span>Log Out</span>
+          </button> 
         </div>
       </motion.div>
     </div>
