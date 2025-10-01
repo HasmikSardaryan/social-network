@@ -60,7 +60,7 @@ export const LoginSettings = () => {
           </div>
 
           {errors.newPassword && (
-            <p className="text-red-500 text-sm">{errors.newLogin.message}</p>
+            <p className="text-red-500 text-sm">{errors.newLogin?.message as string}</p>
           )}
           <div className="relative">
             <input

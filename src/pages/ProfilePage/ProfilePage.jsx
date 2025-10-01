@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { motion } from "framer-motion";
-import { User, Settings, Edit3, Users, Image, LogOut } from "lucide-react";
+import { User, Settings, Edit3, Users, Image, LogOut, Import } from "lucide-react";
 import useAuthContext from "../../context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 import { Axios } from "../../lib/api";
@@ -40,7 +40,9 @@ export const Profile = () => {
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-start">
           <div className="flex items-end space-x-4">
             <div className="w-32 h-32 rounded-full border-4 border-slate-900 bg-slate-700 flex items-center justify-center">
-              <User className="w-16 h-16 text-slate-300" />
+              {user.picture ?
+              <img src={user.picture } alt="avatar" className="w-16 h-16 rounded-full" /> :
+              <User className="w-16 h-16 text-slate-300" /> }
             </div>
             <div>
               <h2 className="text-3xl font-bold">{user.name}</h2>
