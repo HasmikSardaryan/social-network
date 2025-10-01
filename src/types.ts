@@ -7,6 +7,7 @@ export interface IUser {
 }
 
 export type NewUser = Omit<IUser, 'id'>
+export type AuthUser = Pick<IUser, 'login'| 'password'>
 
 export interface IResponse {
     status: string,
