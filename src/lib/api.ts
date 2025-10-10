@@ -1,10 +1,8 @@
 import axios from "axios";
 import type { IUser, IResponse, AuthUser } from "../types";
 
-const baseURL = import.meta.env.VITE_BASE_URL || "http://localhost:4002";
-
 export const Axios = axios.create({
-    baseURL: baseURL,
+    baseURL: import.meta.env.VITE_BASE_URL,
     withCredentials: true
 })
 

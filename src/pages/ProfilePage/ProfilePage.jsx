@@ -1,14 +1,14 @@
 import React, { useEffect } from "react";
 import { motion } from "framer-motion";
-import { User, Settings, Edit3, Users, Image, LogOut, Import } from "lucide-react";
+import { User, Settings, Edit3, Users, LogOut, Import, Image } from "lucide-react";
 import useAuthContext from "../../context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
+import ProfileImage from '../../lib/helpers/image'
 import { Axios } from "../../lib/api";
 
 export const Profile = () => {
   const { user, loading} = useAuthContext(); 
   const navigate = useNavigate();
-
 
   const handleLogout = async() => {
     try {
@@ -40,9 +40,7 @@ export const Profile = () => {
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-start">
           <div className="flex items-end space-x-4">
             <div className="w-32 h-32 rounded-full border-4 border-slate-900 bg-slate-700 flex items-center justify-center">
-              {user.picture ?
-              <img src={user.picture } alt="avatar" className="w-16 h-16 rounded-full" /> :
-              <User className="w-16 h-16 text-slate-300" /> }
+              <ProfileImage src={user.picture} className="w-16 h-16 text-slate-500"/>
             </div>
             <div>
               <h2 className="text-3xl font-bold">{user.name}</h2>
@@ -106,9 +104,12 @@ export const Profile = () => {
           <button className="flex items-center space-x-2 px-4 py-2 bg-slate-700 hover:bg-slate-600 rounded-xl text-slate-200">
             <Users className="h-4 w-4" /> <span>Followers</span>
           </button>
-          <button className="flex items-center space-x-2 px-4 py-2 bg-slate-700 hover:bg-slate-600 rounded-xl text-slate-200">
-            <Image className="h-4 w-4" /> <span>Media</span>
-          </button>
+            <Link to="/posts">
+            <button className="flex items-center space-x-2 px-4 py-2 bg-slate-700 hover:bg-slate-600 rounded-xl text-slate-200 transition-colors duration-200">
+            <Image className="h-4 w-4" />
+              <span>Media</span>
+            </button>
+            </Link>
           <button
             onClick={() => handleLogout()}
             className="flex items-center space-x-2 px-4 py-2 bg-red-600 hover:bg-red-700 rounded-xl text-white"
